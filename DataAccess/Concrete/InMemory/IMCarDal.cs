@@ -3,6 +3,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete.InMemory
@@ -24,26 +25,22 @@ namespace DataAccess.Concrete.InMemory
 
             _brands = new List<Brand>
             {
-                new Brand{BrandId=1,BrandName="Ford" },
-                new Brand{BrandId=2,BrandName="Opel" },
-                new Brand{BrandId=3,BrandName="Fiat" }
+                new Brand{Id=1,Name="Ford" },
+                new Brand{Id=2,Name="Opel" },
+                new Brand{Id=3,Name="Fiat" }
             };
 
             _colors = new List<Color> 
             { 
-                new Color{ColorId=1,ColorName="Red"},
-                new Color{ColorId=2,ColorName="Gri"},
-                new Color{ColorId=3,ColorName="Siyah"},
-                new Color{ColorId=4,ColorName="Beyaz"}
+                new Color{Id=1,Name="Red"},
+                new Color{Id=2,Name="Gri"},
+                new Color{Id=3,Name="Siyah"},
+                new Color{Id=4,Name="Beyaz"}
             };
 
         }
 
-        public void Add(Car car)
-        {
-            _cars.Add(car);
-
-        }
+        
 
         public void Delete(Car car)
         {
@@ -51,25 +48,15 @@ namespace DataAccess.Concrete.InMemory
             _cars.Remove(carToDelete);
         }
 
-        public List<Car> GetAll()
+        
+
+        
+
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
         {
             return _cars;
         }
-
-        public Brand GetByBrandId(int BrandId)
-        {
-            return _brands.SingleOrDefault(b => b.BrandId == BrandId);
-        }
-
-        public Color GetByColorId(int ColorId)
-        {
-            return _colors.SingleOrDefault(co => co.ColorId == ColorId);
-        }
-
-        public Car GetById(int Id)
-        {
-            return _cars.SingleOrDefault(c=>c.Id==Id);
-        }
+        
 
         public void Update(Car car)
         {
@@ -78,6 +65,18 @@ namespace DataAccess.Concrete.InMemory
             carToUpdate.ColorId = car.ColorId;
             carToUpdate.DailyPrice = car.DailyPrice;
             carToUpdate.Description = car.Description;
+        }
+
+
+
+        public void Add(Car car)
+        {
+            _cars.Add(car);          
+        }
+
+        public Car Get(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }
