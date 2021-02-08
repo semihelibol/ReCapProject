@@ -19,23 +19,24 @@ namespace Business.Concrete
 
         public List<Brand> GetAll()
         {
-           return _brandDal.GetAll();
+            return _brandDal.GetAll();
         }
+        
 
         public Brand GetById(int Id)
         {
             return _brandDal.Get(c => c.Id == Id);
         }
-        public bool Add(Brand brand)
+        public int Add(Brand brand)
         {
             if (brand.Name.Length >= 2)
             {
                 _brandDal.Add(brand);
-                return true;
+                return brand.Id;
             }
             else
             {
-                return false;
+                return 0;
             }
         }
 
@@ -54,11 +55,6 @@ namespace Business.Concrete
             {
                 return false;
             }
-        }
-
-        List<Brand> IBrandService.GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        }        
     }
 }

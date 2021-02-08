@@ -27,16 +27,16 @@ namespace Business.Concrete
         {
             return _colorDal.Get(c => c.Id == Id);
         }
-        public bool Add(Color color)
+        public int Add(Color color)
         {
             if (color.Name.Length >= 2)
             {
                 _colorDal.Add(color);
-                return true;
+                return color.Id;
             }
             else
             {
-                return false;
+                return 0;
             }
         }
 
@@ -56,6 +56,5 @@ namespace Business.Concrete
                 return false;
             }
         }
-        
     }
 }

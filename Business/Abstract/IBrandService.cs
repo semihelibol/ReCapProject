@@ -9,7 +9,7 @@ namespace Business.Abstract
     {
         List<Brand> GetAll();
         Brand GetById(int id);
-        bool Add(Brand brand);
+        int Add(Brand brand);
         bool Update(Brand brand);
         void Delete(Brand brand);
        

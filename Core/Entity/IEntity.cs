@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Entities.Abstract
+namespace Core.Entity
 {
     public interface IEntity
     {
-        // Bu bir veritabanı nesnesidir.
+        // Bu bir veritabanı tablosudur.
     }
 }
