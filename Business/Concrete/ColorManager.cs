@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -17,44 +19,51 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {        
-            return _colorDal.GetAll();
+            return new SuccesDataResult<List<Color>>(_colorDal.GetAll());
         }
 
         
-        public Color GetById(int Id)
+        public IDataResult<Color> GetById(int Id)
         {
-            return _colorDal.Get(c => c.Id == Id);
+            var result = new DataResult<Color>(_colorDal.Get(c => c.Id == Id));
+            if (result.Data == null) //Verilen Idli bir Marka yoksa
+            {
+                return new ErrorDataResult<Color>(result.Data, Messages.ColorInvalid);
+            }
+            else
+                return new SuccesDataResult<Color>(result.Data);
         }
-        public int Add(Color color)
+        public IResult Add(Color color)
         {
-            if (color.Name.Length >= 2)
+            if (color.Name.Length < 2)
+            {
+                return new ErrorResult(Messages.ColorNameInvalid);
+            }
+            else
             {
                 _colorDal.Add(color);
-                return color.Id;
-            }
-            else
-            {
-                return 0;
-            }
+                return new SuccessResult(Messages.ColorAdded);
+            }            
         }
 
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
+            return new SuccessResult(Messages.ColorDeleted);
         }
-        public bool Update(Color color)
+        public IResult Update(Color color)
         {
-            if (color.Name.Length >= 2)
+            if (color.Name.Length < 2)
             {
-                _colorDal.Update(color);
-                return true;
+                return new ErrorResult(Messages.ColorNameInvalid);
             }
             else
             {
-                return false;
-            }
+                _colorDal.Update(color);
+                return new SuccessResult(Messages.ColorUpdated);
+            }            
         }
     }
 }

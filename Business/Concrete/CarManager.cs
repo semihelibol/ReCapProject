@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
@@ -18,76 +20,96 @@ namespace Business.Concrete
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
-        }        
+        }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
             //İş kodları
             //Yetkisi var mı?
 
-            return _carDal.GetAll();
+            return new SuccesDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            return _carDal.GetAll(c => c.BrandId == id);
-        }
-               
-        public List<Car> GetCarsByColorId(int id)
-        {
-            return _carDal.GetAll(c => c.ColorId == id);
+            return new SuccesDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id), Messages.CarsListed);
         }
 
-        public List<Car> GetByDailyPrice(decimal min, decimal max)
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
-            return _carDal.GetAll(c => c.DailyPrice >= min && c.DailyPrice <= max);
+            return new SuccesDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id), Messages.CarsListed);
         }
 
-        public Car GetById(int Id)
+        public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
         {
-            if (_carDal is IMCarDal) //CarDal inMemory ise
+            return new SuccesDataResult<List<Car>>(_carDal.GetAll(c => c.DailyPrice >= min && c.DailyPrice <= max));
+        }
+
+        public IDataResult<Car> GetById(int Id)
+        {
+            var result = new DataResult<Car>(_carDal.Get(c => c.Id == Id));
+            if (result.Data == null) //Verilen Idli bir Araba yoksa
             {
-                return _carDal.GetAll().SingleOrDefault(c => c.Id == Id);
+                return new ErrorDataResult<Car>(result.Data, Messages.CarInvalid);
             }
             else
-            {
-                return _carDal.Get(c => c.Id == Id);
-            }
-            
+                return new SuccesDataResult<Car>(result.Data);
         }
-        public int Add(Car car)
+
+        public IResult Add(Car car)
         {
-            if (car.DailyPrice > 0 && car.Description.Length >= 2)
+            if (car.DailyPrice <= 0)
+            {
+                return new ErrorResult(Messages.CarDailyPriceInvalid);
+            }
+            else if (car.Description.Length < 2)
+            {
+                return new ErrorResult(Messages.CarNameInvalid);
+            }
+            else
             {
                 _carDal.Add(car);
-                return car.Id;
+                return new SuccessResult(Messages.CarAdded);
+            }
+        }
+                
+        public IResult Delete(Car car)
+        {
+            if (car != null)
+            {
+                _carDal.Delete(car);
+                return new SuccessResult(Messages.CarDeleted);
             }
             else
-            {
-                return 0;
-            }
+                return new ErrorResult(Messages.CarInvalid);
         }
-
-        public void Delete(Car car)
+        
+        public IResult Update(Car car)
         {
-            _carDal.Delete(car);
-        }
-        public bool Update(Car car)
-        {
-            if (car.DailyPrice > 0 && car.Description.Length >= 2)
+            if (car != null)
             {
-                _carDal.Update(car);
-                return true;
+                if (car.DailyPrice < 0)
+                {
+                    return new ErrorResult(Messages.CarDailyPriceInvalid);
+                }
+                else if (car.Description.Length < 2)
+                {
+                    return new ErrorResult(Messages.CarNameInvalid);
+                }
+                else
+                {
+                    _carDal.Update(car);
+                    return new SuccessResult(Messages.CarUptaded);
+                }
             }
             else
-            {
-                return false;
-            }
+                return new ErrorResult(Messages.CarInvalid);
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
-        }                
+            return new SuccesDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(),Messages.CarsListed);
+        }       
+        
     }
 }
