@@ -72,6 +72,46 @@ namespace ConsoleApp
             else
                 Console.WriteLine(result.Message);
             Console.WriteLine("----------------------");
+           
+
+            Console.WriteLine("---Tüm Kiralamalar Detaylı---");
+            var rentalList = rentalManager.GetRentalDetails();
+            if (rentalList.Success)
+            {
+                foreach (var rent in rentalList.Data)
+                {
+                    Console.WriteLine("Id:{0} |  Araba Adı: {1} | Müşteri: {2} | Şirket: {3} | Kira Tarihi: {4}|{5} | "
+                        , rent.Id, rent.CarName, rent.FirstName + ' ' + rent.LastName, rent.CompanyName,
+                        rent.RentDate, rent.ReturnDate);
+                }
+            }            
+            Console.WriteLine("----------------------");
+
+            Console.WriteLine("---CarId(2) Detaylı Kiralama---");
+            rentalList = rentalManager.GetRentalDetailsByCarId(2);
+            if (rentalList.Success)
+            {
+                foreach (var rent in rentalList.Data)
+                {
+                    Console.WriteLine("Id:{0} |  Araba Adı: {1} | Müşteri: {2} | Şirket: {3} | Kira Tarihi: {4}|{5} | "
+                        , rent.Id, rent.CarName, rent.FirstName + ' ' + rent.LastName, rent.CompanyName,
+                        rent.RentDate, rent.ReturnDate);
+                }
+            }
+            Console.WriteLine("----------------------");
+
+            Console.WriteLine("---CustomerId(2) Detaylı Kiralama---");
+            rentalList = rentalManager.GetRentalDetailsByCustomerId(2);
+            if (rentalList.Success)
+            {
+                foreach (var rent in rentalList.Data)
+                {
+                    Console.WriteLine("Id:{0} |  Araba Adı: {1} | Müşteri: {2} | Şirket: {3} | Kira Tarihi: {4}|{5} | "
+                        , rent.Id, rent.CarName, rent.FirstName + ' ' + rent.LastName, rent.CompanyName,
+                        rent.RentDate, rent.ReturnDate);
+                }
+            }
+            Console.WriteLine("----------------------");
 
             //EfCarTest(carManager,brandManager,colorManager);            
             //EfCarDetailTest(carManager);
