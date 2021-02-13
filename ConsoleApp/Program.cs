@@ -20,10 +20,61 @@ namespace ConsoleApp
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
+            UserManager userManager = new UserManager(new EfUserDal());
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
-           
-            EfCarTest(carManager,brandManager,colorManager);            
-            EfCarDetailTest(carManager);
+            Console.WriteLine("---Yeni Kullanıcı Ekleme---");
+            User newUser = new User { FirstName = "Semih", LastName = "Elibol", Mail = "ss@ss.com", Password = "12345" };
+            var result = userManager.Add(newUser);
+            if (result.Success)
+            {
+                Console.WriteLine("{0}:{1} {2}", result.Message, newUser.FirstName, newUser.LastName);
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+            Console.WriteLine("----------------------");
+            Console.WriteLine("---Yeni Müşteri Ekleme---");
+            Customer newCustomer = new Customer { UserId = newUser.Id, CompanyName = "ss Ltd.Şti." };
+            result = customerManager.Add(newCustomer);
+            if (result.Success)
+            {
+                Console.WriteLine("{0}:{1}", result.Message, newCustomer.CompanyName);
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+            Console.WriteLine("----------------------");
+
+            Console.WriteLine("---Araç kiralama------");
+            Rental newRental = new Rental { CarId = 4, CustomerId = newUser.Id, RentDate = new DateTime(2021, 2, 11) };
+            result = rentalManager.Add(newRental);
+            if (result.Success)
+            {
+                Console.WriteLine("Musteri Id:{0} Car Id:{1}  Kiralama Tarihi:{2}  {3}", newRental.CustomerId, newRental.CarId, newRental.RentDate, result.Message);
+            }
+            else
+                Console.WriteLine(result.Message);
+            Console.WriteLine("----------------------");
+
+            Console.WriteLine("---Araç kiralama Sonlandırma------");
+            var selectedRental = rentalManager.GetById(newRental.Id);
+            selectedRental.Data.ReturnDate = new DateTime(2021, 2, 12);
+            result = rentalManager.Update(selectedRental.Data);
+            if (result.Success)
+            {
+                Console.WriteLine("Musteri Id:{0} Car Id:{1}  Kiralama Tarihi:{2}  Teslim Tarihi:{3} {4}"
+                    , selectedRental.Data.CustomerId, selectedRental.Data.CarId, selectedRental.Data.RentDate, selectedRental.Data.ReturnDate, result.Message);
+            }
+            else
+                Console.WriteLine(result.Message);
+            Console.WriteLine("----------------------");
+
+            //EfCarTest(carManager,brandManager,colorManager);            
+            //EfCarDetailTest(carManager);
         }
 
         private static void EfCarDetailTest(CarManager carManager)

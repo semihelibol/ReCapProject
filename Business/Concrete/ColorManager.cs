@@ -28,7 +28,7 @@ namespace Business.Concrete
         public IDataResult<Color> GetById(int Id)
         {
             var result = new DataResult<Color>(_colorDal.Get(c => c.Id == Id));
-            if (result.Data == null) //Verilen Idli bir Marka yoksa
+            if (result.Data == null) //Verilen Idli bir Renk yoksa
             {
                 return new ErrorDataResult<Color>(result.Data, Messages.ColorInvalid);
             }
