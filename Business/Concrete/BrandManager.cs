@@ -21,7 +21,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Brand>> GetAll()
         {            
-            return new SuccesDataResult<List<Brand>>(_brandDal.GetAll(), Messages.BrandsListed);
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.BrandsListed);
         }
         
 
@@ -33,7 +33,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<Brand>(result.Data, Messages.BrandInvalid);
             }
             else
-                return new SuccesDataResult<Brand>(result.Data);
+                return new SuccessDataResult<Brand>(result.Data);
         }
         public IResult Add(Brand brand)
         {

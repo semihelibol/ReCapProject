@@ -20,7 +20,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Customer>> GetAll()
         {
-            return new SuccesDataResult<List<Customer>>(_customerDal.GetAll());
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
 
@@ -32,7 +32,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<Customer>(result.Data, Messages.CustomerInvalid);
             }
             else
-                return new SuccesDataResult<Customer>(result.Data);
+                return new SuccessDataResult<Customer>(result.Data);
         }
         public IResult Add(Customer customer)
         {

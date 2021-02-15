@@ -16,14 +16,56 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            
+
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
             UserManager userManager = new UserManager(new EfUserDal());
             CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            //EfRentalTest(userManager, customerManager, rentalManager);          
+            //EfCarTest(carManager,brandManager,colorManager);            
+            //EfCarDetailTest(carManager);
 
+            var result = rentalManager.GetRentalDetailsOnRent();
+            if (result.Success)
+            {
+                foreach (var rent in result.Data)
+                {
+                    Console.WriteLine("Id:{0} |  Araba:{1} | Ad Soyad:{2} {3} | Şirket:{4} | Kiralama tarihi: {5} | "
+                        , rent.Id, rent.CarName, rent.FirstName, rent.LastName, rent.CompanyName,rent.RentDate);
+                }
+                Console.WriteLine("Toplam {0} adet {1}",result.Data.Count, result.Message);
+            }
+            else           
+                Console.WriteLine(result.Message);
+
+           
+        }
+
+        private static void EfCarDetailTest(CarManager carManager)
+        {
+            Console.WriteLine("---Tüm Arabalar Detaylı---");
+            var result = carManager.GetCarDetails();
+            if (result.Success)
+            {
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine("Id:{0} |  Açıklama: {1} | Marka: {2} | Renk: {3} | Günlük Kira Ücreti: {4} | "
+                        , car.Id, car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);            
+            }
+
+            Console.WriteLine("----------------------");
+            
+        }
+
+        static void EfRentalTest(UserManager userManager, CustomerManager customerManager, RentalManager rentalManager)
+        {
             Console.WriteLine("---Yeni Kullanıcı Ekleme---");
             User newUser = new User { FirstName = "Semih", LastName = "Elibol", Mail = "ss@ss.com", Password = "12345" };
             var result = userManager.Add(newUser);
@@ -50,7 +92,7 @@ namespace ConsoleApp
             Console.WriteLine("----------------------");
 
             Console.WriteLine("---Araç kiralama------");
-            Rental newRental = new Rental { CarId = 4, CustomerId = newUser.Id, RentDate = new DateTime(2021, 2, 11) };
+            Rental newRental = new Rental { CarId = 2, CustomerId = newUser.Id, RentDate = new DateTime(2021, 2, 11) };
             result = rentalManager.Add(newRental);
             if (result.Success)
             {
@@ -72,7 +114,7 @@ namespace ConsoleApp
             else
                 Console.WriteLine(result.Message);
             Console.WriteLine("----------------------");
-           
+
 
             Console.WriteLine("---Tüm Kiralamalar Detaylı---");
             var rentalList = rentalManager.GetRentalDetails();
@@ -84,7 +126,7 @@ namespace ConsoleApp
                         , rent.Id, rent.CarName, rent.FirstName + ' ' + rent.LastName, rent.CompanyName,
                         rent.RentDate, rent.ReturnDate);
                 }
-            }            
+            }
             Console.WriteLine("----------------------");
 
             Console.WriteLine("---CarId(2) Detaylı Kiralama---");
@@ -112,33 +154,7 @@ namespace ConsoleApp
                 }
             }
             Console.WriteLine("----------------------");
-
-            //EfCarTest(carManager,brandManager,colorManager);            
-            //EfCarDetailTest(carManager);
         }
-
-        private static void EfCarDetailTest(CarManager carManager)
-        {
-            Console.WriteLine("---Tüm Arabalar Detaylı---");
-            var result = carManager.GetCarDetails();
-            if (result.Success)
-            {
-                foreach (var car in result.Data)
-                {
-                    Console.WriteLine("Id:{0} |  Açıklama: {1} | Marka: {2} | Renk: {3} | Günlük Kira Ücreti: {4} | "
-                        , car.Id, car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
-                }
-            }
-            else
-            {
-                Console.WriteLine(result.Message);            
-            }
-
-            Console.WriteLine("----------------------");
-            
-        }
-              
-
         private static void EfCarTest(CarManager carManager, BrandManager brandManager, ColorManager colorManager)
         {
             Console.WriteLine("---Yeni Araba Ekleme---");

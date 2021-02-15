@@ -22,7 +22,7 @@ namespace Business.Concrete
 
         public IDataResult<List<User>> GetAll()
         {
-            return new SuccesDataResult<List<User>>(_userDal.GetAll());
+            return new SuccessDataResult<List<User>>(_userDal.GetAll());
         }
 
 
@@ -34,7 +34,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<User>(result.Data, Messages.UserInvalid);
             }
             else
-                return new SuccesDataResult<User>(result.Data);
+                return new SuccessDataResult<User>(result.Data);
         }
         public IResult Add(User user)
         {

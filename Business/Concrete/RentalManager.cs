@@ -14,7 +14,7 @@ namespace Business.Concrete
     public class RentalManager:IRentalService
     {
         IRentalDal _rentalDal;
-
+        
         public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
@@ -22,7 +22,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccesDataResult<List<Rental>>(_rentalDal.GetAll());
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
 
 
@@ -34,7 +34,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<Rental>(result.Data, Messages.RecordInvalid);
             }
             else
-                return new SuccesDataResult<Rental>(result.Data);
+                return new SuccessDataResult<Rental>(result.Data);
         }
 
         public IResult CarRentable(int carId)
@@ -70,15 +70,27 @@ namespace Business.Concrete
         }
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
-            return new SuccesDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
         }
         public IDataResult<List<RentalDetailDto>> GetRentalDetailsByCarId(int carId)
         {
-            return new SuccesDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(r=>r.CarId==carId));
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(r=>r.CarId==carId));
         }
         public IDataResult<List<RentalDetailDto>> GetRentalDetailsByCustomerId(int customerId)
         {
-            return new SuccesDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(r => r.CustomerId == customerId));
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(r => r.CustomerId == customerId));
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsOnRent()
+        {
+            var result = new DataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(r => r.ReturnDate == null));
+            if (result.Data.Count == 0) //Verilen Idli bir Kiralama Kaydı yoksa
+            {
+                return new ErrorDataResult<List<RentalDetailDto>>(Messages.NoCarOnRent);
+
+            }
+            else
+                return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(r => r.ReturnDate == null), Messages.CarOnRent);          
         }
     }            
 }
