@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -15,7 +17,7 @@ namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
-        ICarDal _carDal;
+        ICarDal _carDal;        
 
         public CarManager(ICarDal carDal)
         {
@@ -56,54 +58,30 @@ namespace Business.Concrete
                 return new SuccessDataResult<Car>(result.Data);
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.DailyPrice <= 0)
-            {
-                return new ErrorResult(Messages.CarDailyPriceInvalid);
-            }
-            else if (car.Description.Length < 2)
-            {
-                return new ErrorResult(Messages.CarNameInvalid);
-            }
-            else
-            {
-                _carDal.Add(car);
-                return new SuccessResult(Messages.CarAdded);
-            }
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);           
         }
-                
+
+        
         public IResult Delete(Car car)
         {
             if (car != null)
             {
                 _carDal.Delete(car);
-                return new SuccessResult(Messages.CarDeleted);
+                return new SuccessResult(Messages.CarDeleted);                               
             }
             else
                 return new ErrorResult(Messages.CarInvalid);
         }
-        
+
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
-            if (car != null)
-            {
-                if (car.DailyPrice < 0)
-                {
-                    return new ErrorResult(Messages.CarDailyPriceInvalid);
-                }
-                else if (car.Description.Length < 2)
-                {
-                    return new ErrorResult(Messages.CarNameInvalid);
-                }
-                else
-                {
-                    _carDal.Update(car);
-                    return new SuccessResult(Messages.CarUptaded);
-                }
-            }
-            else
-                return new ErrorResult(Messages.CarInvalid);
+            _carDal.Update(car);
+            return new SuccessResult(Messages.CarUptaded);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()

@@ -40,7 +40,18 @@ namespace ConsoleApp
             else           
                 Console.WriteLine(result.Message);
 
-           
+            var cars = carManager.GetCarDetails();
+            if (cars.Success)
+            {
+                foreach (var car in cars.Data)
+                {
+                    if(rentalManager.CarRentable(car.Id).Success)
+                        Console.WriteLine("Id:{0} |  Açıklama: {1} | Marka: {2} | Renk: {3} | Günlük Kira Ücreti: {4} | "
+                        , car.Id, car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
+                    
+                    
+                }
+            }
         }
 
         private static void EfCarDetailTest(CarManager carManager)
