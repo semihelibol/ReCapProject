@@ -48,6 +48,14 @@ namespace Business.Constants
         public static string NoCarOnRent="Kirada hiç araba yok.";
         public static string CarOnRent="Araba kirada görünüyor.";
         public static string UsedInRental="Araba kiralamada kullanığı için silinemez.";
-        
+        public static string ImageInvalid="Resim bulunamadı.";
+        public static string CarImageAdded="Resim eklendi.";
+        public static string CarImagesListed="Araba resimleri listelendi.";
+        public static string CarImagesLimitExceded= "Resim limiti aşıldığı için yeni resim eklenemiyor.";
+        public static string CarImageInvalid="Araba resmi bulunamadı.";
+        public static string CarImageDeleted="Araba resmi silindi.";
+        public static string ImageFileTypeInvalid="Resim formatı uyumsuz.";
+        public static string CarImageSaved="Resim kaydedildi.";
+        public static string CarImageUpdated="Resim güncellendi.";
     }
 }
