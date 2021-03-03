@@ -1,12 +1,13 @@
 ﻿using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
 {
     public static class Messages
-    {
+    {        
         public static string CarAdded = "Araba eklendi.";
         public static string CarNameInvalid = "Araba adı hatalı girildi. En az 2 karakter olmalıdır.";
         public static string CarDailyPriceInvalid = "Günlük kira ücreti sıfırdan büyük olmalıdır.";
@@ -57,5 +58,10 @@ namespace Business.Constants
         public static string ImageFileTypeInvalid="Resim formatı uyumsuz.";
         public static string CarImageSaved="Resim kaydedildi.";
         public static string CarImageUpdated="Resim güncellendi.";
+        public static string AuthorizationDenied="Yetkiniz yok.";
+        public static string UserRegistered="Kulanıcı kayıt oldu.";
+        public static string UserSuccesfulLogin="Başarılı giriş.";
+        public static string UserAlreadyExists="Kullanıcı mevcut";
+        public static string AccessTokenCreated="Token olutuşruldu.";
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.DataAcces;
+﻿
+using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -27,7 +28,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  UserId = u.Id,
                                  FirstName = u.FirstName,
                                  LastName = u.LastName,
-                                 Mail = u.Mail,
+                                 Mail = u.Email,
                                  CompanyName = c.CompanyName                                 
                              };
 

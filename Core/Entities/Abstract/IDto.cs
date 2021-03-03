@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.DataAcces
+namespace Core.Entities.Abstract
 {
     public interface IDto
     {

@@ -1,11 +1,11 @@
 ﻿
-using Core.Entity;
+using Core.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Core.DataAcces
+namespace Core.DataAccess
 {
     
     public interface IEntityRepository<T> where T : class, IEntity, new()
