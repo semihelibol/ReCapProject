@@ -3,7 +3,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
-using Core.Utilities.Operations;
+using Core.Utilities.Filing;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -33,11 +33,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(CarImage carImage,IFormFile file)
         {
-            carImage.ImagePath = imagePath+FileOperation.GenerateGUIDFileName(file, 20);
+            carImage.ImagePath = imagePath+FileHelper.GenerateGUIDFileName(file, 20);
             carImage.Date = DateTime.Now;            
 
             IResult result = BusinessRules.Run(CheckIfCarExists(carImage.CarId),CheckIfImagesLimitExceded(carImage.CarId),
-                FileOperation.CheckFileType(file, imageExtensions),FileOperation.Add(carImage.ImagePath, file));
+                FileHelper.CheckFileType(file, imageExtensions),FileHelper.Add(carImage.ImagePath, file));
             if (result == null)
             {
                 _carImageDal.Add(carImage);
@@ -50,7 +50,7 @@ namespace Business.Concrete
         {
             string deletePath =_carImageDal.Get(ci => ci.Id == carImage.Id).ImagePath;
 
-            IResult result = BusinessRules.Run(CheckIfCarImageExists(carImage.Id),FileOperation.Delete(deletePath));
+            IResult result = BusinessRules.Run(CheckIfCarImageExists(carImage.Id),FileHelper.Delete(deletePath));
             if (result == null)
             {
                 _carImageDal.Delete(carImage); 
@@ -63,11 +63,11 @@ namespace Business.Concrete
         public IResult Update(CarImage carImage,IFormFile file)
         {
             string deletePath=_carImageDal.Get(ci => ci.Id == carImage.Id).ImagePath;
-            carImage.ImagePath = imagePath+FileOperation.GenerateGUIDFileName(file, 20);
+            carImage.ImagePath = imagePath+FileHelper.GenerateGUIDFileName(file, 20);
             carImage.Date = DateTime.Now;
 
             IResult result = BusinessRules.Run(CheckIfCarExists(carImage.CarId), CheckIfImagesLimitExceded(carImage.CarId),
-                FileOperation.CheckFileType(file, imageExtensions), FileOperation.Delete(deletePath), FileOperation.Add(carImage.ImagePath, file));
+                FileHelper.CheckFileType(file, imageExtensions), FileHelper.Delete(deletePath), FileHelper.Add(carImage.ImagePath, file));
             if (result == null)
             {
                 _carImageDal.Update(carImage);

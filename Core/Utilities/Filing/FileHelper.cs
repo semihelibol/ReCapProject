@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Core.Utilities.Operations
+namespace Core.Utilities.Filing
 {
-    public class FileOperation
+    public class FileHelper
     {
         public static IResult Add(string filePath,IFormFile file)
         {
