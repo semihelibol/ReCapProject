@@ -11,8 +11,7 @@ namespace Business.Concrete
     public class PaymentManager : IPaymentService
     {
         public IResult CreditCardControl(CreditCard creditCard)
-        {
-            //var result = creditCard.SecurityCode[0] > 8 ? false : true;
+        {            
             var result = false;
             if (creditCard.SecurityCode == "123") { result = true; }
             if (!result)
