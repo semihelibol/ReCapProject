@@ -93,9 +93,11 @@ namespace Business.Concrete
             if (result == null)
             {
                 _carDal.Add(car);
+                
                 //transaction seneryosu
-                car.ColorId = 230;//230 Id numaralı bir renk olmadığı için hataya düşecek
-                _carDal.Update(car);
+                //car.ColorId = 230;//230 Id numaralı bir renk olmadığı için hataya düşecek
+                //Thread.Sleep(10000);
+                //_carDal.Update(car);
                 ////////////////////////////////
                 return new SuccessResult(Messages.CarAdded);
             }
@@ -168,6 +170,45 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        public IDataResult<CarDetailDto> GetCarDetailsById(int id)
+        {
+            IResult result = BusinessRules.Run(CheckIfCarExists(id));
+            if (result != null)
+            {
+                return new ErrorDataResult<CarDetailDto>(result.Message);
+            }
+            return new SuccessDataResult<CarDetailDto>(_carDal.GetCarDetails(c => c.Id == id).FirstOrDefault());
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
+        {
+            IResult result = BusinessRules.Run(CheckIfBrandExists(brandId));
+            if (result != null)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>(result.Message);
+            }
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.BrandId == brandId), Messages.CarsListed);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
+        {
+            IResult result = BusinessRules.Run(CheckIfColorExists(colorId));
+            if (result != null)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>(result.Message);
+            }
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.ColorId == colorId), Messages.CarsListed);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandIdColorId(int brandId, int colorId)
+        {
+            IResult result = BusinessRules.Run(CheckIfColorExists(colorId));
+            if (result != null)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>(result.Message);
+            }
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.BrandId==brandId && c.ColorId == colorId), Messages.CarsListed);
+        }
     }    
         
 }

@@ -20,7 +20,7 @@ namespace Business.Concrete
     {
         ICarImageDal _carImageDal;
         ICarService _carService;
-        string imagePath= @"..\WebAPI\Images\";        
+        string imagePath= @"..\WebAPI\wwwroot\images\";        
         string[] imageExtensions ={".jpg", ".jpeg", ".png",".bmp" }; 
       
         public CarImageManager(ICarImageDal carImageDal, ICarService carService)
@@ -33,11 +33,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(CarImage carImage,IFormFile file)
         {
-            carImage.ImagePath = imagePath+FileHelper.GenerateGUIDFileName(file, 20);
+            carImage.ImagePath = FileHelper.GenerateGUIDFileName(file, 20);
             carImage.Date = DateTime.Now;            
 
             IResult result = BusinessRules.Run(CheckIfCarExists(carImage.CarId),CheckIfImagesLimitExceded(carImage.CarId),
-                FileHelper.CheckFileType(file, imageExtensions),FileHelper.Add(carImage.ImagePath, file));
+                FileHelper.CheckFileType(file, imageExtensions),FileHelper.Add(imagePath+carImage.ImagePath, file));
             if (result == null)
             {
                 _carImageDal.Add(carImage);
@@ -48,7 +48,7 @@ namespace Business.Concrete
 
         public IResult Delete(CarImage carImage)
         {
-            string deletePath =_carImageDal.Get(ci => ci.Id == carImage.Id).ImagePath;
+            string deletePath = imagePath+_carImageDal.Get(ci => ci.Id == carImage.Id).ImagePath;
 
             IResult result = BusinessRules.Run(CheckIfCarImageExists(carImage.Id),FileHelper.Delete(deletePath));
             if (result == null)
@@ -62,12 +62,12 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(CarImage carImage,IFormFile file)
         {
-            string deletePath=_carImageDal.Get(ci => ci.Id == carImage.Id).ImagePath;
-            carImage.ImagePath = imagePath+FileHelper.GenerateGUIDFileName(file, 20);
+            string deletePath= imagePath + _carImageDal.Get(ci => ci.Id == carImage.Id).ImagePath;
+            carImage.ImagePath = FileHelper.GenerateGUIDFileName(file, 20);
             carImage.Date = DateTime.Now;
 
             IResult result = BusinessRules.Run(CheckIfCarExists(carImage.CarId), CheckIfImagesLimitExceded(carImage.CarId),
-                FileHelper.CheckFileType(file, imageExtensions), FileHelper.Delete(deletePath), FileHelper.Add(carImage.ImagePath, file));
+                FileHelper.CheckFileType(file, imageExtensions), FileHelper.Delete(deletePath), FileHelper.Add(imagePath + carImage.ImagePath, file));
             if (result == null)
             {
                 _carImageDal.Update(carImage);
@@ -103,7 +103,7 @@ namespace Business.Concrete
         }
         public IDataResult<List<CarImage>> CheckIfCarImageNull(int carId)
         {
-            string logoPath = imagePath + "logo.jpg";
+            string logoPath = "logo.png";
             var result = _carImageDal.GetAll(ci => ci.CarId == carId).Any();
             if (result==false)
             {

@@ -41,8 +41,18 @@ namespace Business.Concrete
 
         public IResult CarRentable(int carId)
         {
-            var result = _rentalDal.GetRentalDetails(r => r.CarId == carId && r.ReturnDate == null);
+            var result = _rentalDal.GetRentalDetails(r => r.CarId == carId && (r.ReturnDate == null));//||r.ReturnDate>DateTime.Today));
             if (result.Count()>0)
+            {
+                return new ErrorResult(Messages.CarIsRented);
+            }
+            return new SuccessResult(Messages.CarIsRentable);
+        }
+
+        public IResult CarRentableByRentDate(int carId, DateTime rentDate)
+        {
+            var result = _rentalDal.GetRentalDetails(r => r.CarId == carId && (r.ReturnDate == null || r.ReturnDate >= rentDate));
+            if (result.Count() > 0)
             {
                 return new ErrorResult(Messages.CarIsRented);
             }

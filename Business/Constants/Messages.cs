@@ -40,6 +40,7 @@ namespace Business.Constants
         public static string CustomerCompanyNameInvalid = "Şirket adı hatalı girildi. En az 2 karakter olmalıdır.";
         public static string CustomerDeleted="Müşteri silindi.";
         public static string CustomerUpdated="Müşteri güncellendi.";
+        public static string CustomersListed = "Müşteriler listelendi.";
         public static string RecordInvalid="Kiralama kaydı bulunamdı.";
         public static string RentalAdded="Kiralama işlemi gerçekleştirildi.";
         public static string CarIsRented="Araba kiralanmış görünüyor.";
@@ -63,5 +64,9 @@ namespace Business.Constants
         public static string UserSuccesfulLogin="Başarılı giriş.";
         public static string UserAlreadyExists="Kullanıcı mevcut";
         public static string AccessTokenCreated="Token olutuşruldu.";
+        public static string CreditCardIsInvalid="Kredi kartı hatalı.";
+        public static string CreditCardIsCorrect="Kredi kartı doğrulandı.";
+        public static string NoPaidByCreditCard="Kredi kartıyla ödeme yapılamadı.";
+        public static string PaidByCreditCard="Kredi kartıyla ödeme yapıldı.";
     }
 }

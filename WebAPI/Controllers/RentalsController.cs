@@ -86,10 +86,21 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("carreantable")]
+        [HttpGet("carrentable")]
         public IActionResult CarRentable(int carId)
         {
             var result = _rentalService.CarRentable(carId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("carrentablebyrentdate")]
+        public IActionResult CarRentableByRentDate(int carId, DateTime rentDate)
+        {
+            var result = _rentalService.CarRentableByRentDate(carId, rentDate);
             if (result.Success)
             {
                 return Ok(result);
