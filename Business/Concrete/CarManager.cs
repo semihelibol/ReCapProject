@@ -83,7 +83,7 @@ namespace Business.Concrete
 
         }
 
-        [SecuredOperation("car.add,add,admin")]
+       // [SecuredOperation("car.add,add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         [TransactionScopeAspect]
@@ -105,7 +105,7 @@ namespace Business.Concrete
                 return result;
         }
 
-        [SecuredOperation("car.delete,delete,admin")]
+       // [SecuredOperation("car.delete,delete,admin")]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
