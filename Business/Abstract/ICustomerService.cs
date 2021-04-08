@@ -16,5 +16,6 @@ namespace Business.Abstract
         IResult Delete(Customer customer);
         IDataResult<List<CustomerDetailDto>> GetCustomerDetails();
         IDataResult<List<CustomerDetailDto>> GetCustomerDetailsByUserId(int userId);
+        IDataResult<short> GetCustomerFindeksScoreByCustomerId(int customerId);
     }
 }

@@ -4,6 +4,7 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.DataAccess;
 using Core.Entities.Concrete;
+using Core.Entities.DTOs;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -68,9 +69,11 @@ namespace Business.Concrete
         }
 
         public IDataResult<User> GetByMail(string email)
-        {
+        {           
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
+
+
         private IResult CheckIfUserExists(int id)
         {
             var result = _userDal.GetAll(u => u.Id == id).Any();

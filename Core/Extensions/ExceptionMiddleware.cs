@@ -36,9 +36,10 @@ namespace Core.Extensions
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             string message = "Internal Server Error";
-            IEnumerable<ValidationFailure> errors;
+
             if (e.GetType() == typeof(ValidationException))
             {
+                IEnumerable<ValidationFailure> errors;
                 message = e.Message;
                 errors = ((ValidationException)e).Errors;
                 httpContext.Response.StatusCode = 400;
@@ -51,11 +52,22 @@ namespace Core.Extensions
                 }.ToString());
 
             }
+            //if (e.Message=="Yetkiniz yok."){
+
+            //    return httpContext.Response.WriteAsync(new ErrorDetails
+            //    {
+            //        StatusCode = 400,
+            //        Message = "Yetkiniz Yok ki:("
+
+            //    }.ToString()) ;
+
+
+            //}           
 
             return httpContext.Response.WriteAsync(new ErrorDetails
             {
                 StatusCode = httpContext.Response.StatusCode,
-                Message = message
+                Message = e.Message
             }.ToString());
         }
     }

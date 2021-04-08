@@ -83,7 +83,7 @@ namespace Business.Concrete
 
         }
 
-       // [SecuredOperation("car.add,add,admin")]
+        [SecuredOperation("car.add,add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         [TransactionScopeAspect]

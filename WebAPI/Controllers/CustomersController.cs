@@ -96,5 +96,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getcustomerfindeksscorebycustomerid")]
+        public IActionResult GetCustomerFindeksScoreByCustomerId(int customerId)
+        {
+            var result = _customerService.GetCustomerFindeksScoreByCustomerId(customerId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

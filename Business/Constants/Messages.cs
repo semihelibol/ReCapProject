@@ -1,4 +1,5 @@
-﻿using Entities.DTOs;
+﻿using Core.Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -27,7 +28,7 @@ namespace Business.Constants
         public static string ColorUpdated="Renk güncellendi.";
         public static string ColorInvalid = "Renk bulanamadı.";
         public static string ColorNameInvalid= "Renk adı hatalı girildi. En az 2 karakter olmalıdır.";
-        public static string UserInvalid="Kullanıcı bulunamdı.";
+        public static string UserInvalid="Kullanıcı bulunamadı.";
         public static string UserFirstNameInvalid= "İsim hatalı girildi. En az 2 karakter olmalıdır.";
         public static string UserMailInvalid="Mail hatalı girildi.";
         public static string UserPasswordInvalid = "Şifre hatalı girildi.Şifre; 6-16 karakter arasında olmalıdır.";
@@ -63,10 +64,24 @@ namespace Business.Constants
         public static string UserRegistered="Kulanıcı kayıt oldu.";
         public static string UserSuccesfulLogin="Başarılı giriş.";
         public static string UserAlreadyExists="Kullanıcı mevcut";
-        public static string AccessTokenCreated="Token olutuşruldu.";
+        public static string AccessTokenCreated="Giriş yapıldı.";
         public static string CreditCardIsInvalid="Kredi kartı hatalı.";
         public static string CreditCardIsCorrect="Kredi kartı doğrulandı.";
         public static string NoPaidByCreditCard="Kredi kartıyla ödeme yapılamadı.";
         public static string PaidByCreditCard="Kredi kartıyla ödeme yapıldı.";
+        public static string UserOrPasswordInvalid="Mail ya da şifre hatalı.";
+        public static string CustomerFindeksScoreInvalid="Findeks puanı bulunamadı.";
+        public static string CustomerGetFindeksScore="Findeks puanı başarıyla çekildi.";
+        public static string RentalInvalid="Kiralama bulunamadı.";
+        public static string RentalRentDateInvalid= "Kiralama tarihi boş geçilemez.";
+        public static string CustomerFindeksScoreIsNotEnough= "Müşteri findeks puanı yeterli değil.";
+        public static string CarMinFindeksScoreInvalid="Findek puanı 0-1900 arasında olmalıdır.";
+        public static string CarModelYearInvalid="Geçerli bir model yılı giriniz.";
+        public static string PaymentAdded="Ödeme Yapıldı.";
+        public static string CreditCardAdded="Kredi Kartı eklendi.";
+        public static string CreditCardDeleted="Kredi Kartı silindi.";
+        public static string CreditCardUpdated="Kredi Kartı güncellendi.";
+        public static string CreditCardsListed="Kredi Kartları listelendi.";
+        public static string CreditCardNameInvalid = "Kredi kartının adı hatalı girildi. En az 2 karakter olmalıdır.";
     }
 }

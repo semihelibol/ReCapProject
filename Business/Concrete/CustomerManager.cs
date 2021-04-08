@@ -67,5 +67,31 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetails(c => c.UserId == userId), Messages.CustomersListed);
         }
+
+        public IDataResult<short> GetCustomerFindeksScoreByCustomerId(int customerId) 
+        {
+            var result = new DataResult<Customer>(_customerDal.Get(cu => cu.Id == customerId),true);
+            if (result.Data == null)
+            {
+                return new ErrorDataResult<short>(0, Messages.CustomerInvalid); 
+            }
+            else 
+            { 
+                string identityNumber = result.Data.IdentityNumber;
+                short key = 0;
+                if (identityNumber.Length == 11)
+                {
+                    short.TryParse(identityNumber.Substring(0, 2), out key);
+                    Random random = new Random();
+                    short findeksScore = Convert.ToInt16(random.Next(1900) + key);
+                    return new SuccessDataResult<short>(findeksScore > 1900 ? Convert.ToInt16(1900) : findeksScore, Messages.CustomerGetFindeksScore);
+                }
+                else
+                {
+                    return new ErrorDataResult<short>(0, Messages.CustomerFindeksScoreInvalid); 
+                }
+                
+            }
+        }        
     }
 }

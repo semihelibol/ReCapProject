@@ -35,7 +35,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarName = c.Description,
                                  ColorName = co.Name,
                                  ModelYear=c.ModelYear,
-                                 DailyPrice = c.DailyPrice,                                 
+                                 DailyPrice = c.DailyPrice,
+                                 MinFindeksScore=c.MinFindeksScore,
                                  CarImagePath= (from ci in context.CarImages where ci.CarId == c.Id select ci.ImagePath).FirstOrDefault()==null 
                                  ? "logo.png" : (from ci in context.CarImages where ci.CarId == c.Id select ci.ImagePath).FirstOrDefault()                                 
                              };

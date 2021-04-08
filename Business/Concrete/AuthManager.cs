@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Text;
 using Business.Constants;
 using Core.Entities.DTOs;
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 
 namespace Business.Concrete
 {
@@ -23,6 +25,7 @@ namespace Business.Concrete
             _tokenHelper = tokenHelper;
         }
 
+        [ValidationAspect(typeof(AuthValidator))]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -40,6 +43,25 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
+        [ValidationAspect(typeof(AuthValidator))]
+        public IDataResult<User> Update(UserForRegisterDto userForRegisterDto, string password)
+        {
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            var user = new User
+            {
+                Id = userForRegisterDto.Id,
+                Email = userForRegisterDto.Email,
+                FirstName = userForRegisterDto.FirstName,
+                LastName = userForRegisterDto.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = userForRegisterDto.Status
+            };
+            _userService.Update(user);
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
+        }
+
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email).Data;
@@ -50,11 +72,14 @@ namespace Business.Concrete
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
             {
-                return new ErrorDataResult<User>(Messages.UserPasswordInvalid);
+                return new ErrorDataResult<User>(Messages.UserOrPasswordInvalid);
             }
 
             return new SuccessDataResult<User>(userToCheck, Messages.UserSuccesfulLogin);
         }
+
+        
+
 
         public IResult UserExists(string email)
         {

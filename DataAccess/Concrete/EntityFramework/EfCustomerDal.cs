@@ -29,7 +29,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  FirstName = u.FirstName,
                                  LastName = u.LastName,
                                  Email = u.Email,
-                                 CompanyName = c.CompanyName                                 
+                                 CompanyName = c.CompanyName,
+                                 IdentityNumber=c.IdentityNumber
                              };
 
                 return result.ToList();

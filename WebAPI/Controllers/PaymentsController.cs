@@ -1,11 +1,7 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
@@ -20,10 +16,10 @@ namespace WebAPI.Controllers
             _paymentService = paymentService;
         }
 
-        [HttpPost("creditcardcontrol")]
-        public IActionResult CreditCardControl(CreditCard creditCard)
+        [HttpPost("checkifcreditcard")]
+        public IActionResult CheckIfCreditCard(CreditCard creditCard)
         {
-            var result = _paymentService.CreditCardControl(creditCard);
+            var result = _paymentService.CheckIfCreditCard(creditCard);
             if (result.Success)
             {
                 return Ok(result);
@@ -32,9 +28,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("paybycreditcard")]
-        public IActionResult PayByCreditCard(CreditCard creditCard)
+        public IActionResult PayByCreditCard(PayByCreditCardDto payByCreditCardDto)
         {
-            var result = _paymentService.PayByCreditCard(creditCard);
+            var result = _paymentService.PayByCreditCard(payByCreditCardDto);
             if (result.Success)
             {
                 return Ok(result);
